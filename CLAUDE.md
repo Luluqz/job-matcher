@@ -1,0 +1,69 @@
+# Job Matcher — CLAUDE.md
+
+## Contexte du projet
+App web qui recherche des offres d'emploi via l'API Adzuna et utilise l'API
+Claude pour scorer/justifier la pertinence de chaque offre par rapport à un
+profil utilisateur en texte libre.
+
+Objectif : projet portfolio/apprentissage, réalisé en 7-10 jours.
+Développeur expérimenté en Angular, débutant sur NestJS.
+
+## Stack
+- Frontend : Angular (standalone components, SCSS)
+- Backend : NestJS
+- Sources externes : API Adzuna (recherche d'offres), API Claude (matching/scoring)
+- Pas de base de données en V1 (cache simple en mémoire si besoin)
+- Pas d'authentification en V1
+
+## Structure du repo
+```
+job-matcher/
+├── backend/     (NestJS — voir backend/src/jobs/)
+├── frontend/    (Angular)
+└── README.md
+```
+
+## Commandes utiles
+- Backend dev : `cd backend && npm run start:dev` (port 3000)
+- Frontend dev : `cd frontend && ng serve` (port 4200)
+- Tests backend : `cd backend && npm run test`
+- Lint : `npm run lint` (à lancer après chaque modif de code backend)
+
+## Conventions de code
+- TypeScript strict partout
+- Services NestJS injectables avec interfaces typées pour les réponses Adzuna/Claude
+- DTOs avec `class-validator` pour valider les entrées des controllers
+- Jamais de clé API en dur dans le code — toujours via `@nestjs/config` / `.env`
+- Un service = une responsabilité (ex: `adzuna.service.ts` ne fait QUE parler à
+  Adzuna, `ai-matching.service.ts` ne fait QUE construire le prompt et appeler Claude)
+
+## Règles importantes sur l'IA (Claude API)
+- Le score de pertinence (0-10) et sa justification SONT le travail de Claude
+  — c'est un jugement sémantique (profil vs offre), pas un calcul déterministe,
+  donc pas question de le remplacer par des règles en dur
+- En revanche, toute vraie opération numérique/mathématique exacte (moyenne de
+  salaire, comptage, tri d'une liste selon un score déjà obtenu, pourcentages)
+  reste faite en code, jamais "calculée" par le prompt — les LLM ne sont pas
+  fiables sur de l'arithmétique précise
+- Le prompt de matching doit toujours retourner du JSON structuré strict
+  (score + justification), jamais du texte libre à parser
+- Toujours prévoir un fallback propre si l'appel à l'API Claude échoue ou
+  timeout (l'app ne doit pas planter, afficher les offres sans score plutôt)
+- Ne jamais envoyer plus d'une dizaine d'offres par appel (limiter le volume
+  de tokens)
+
+## Sécurité
+- `.env` dans `.gitignore`, jamais commité
+- Clés Adzuna et Claude uniquement lues côté backend, jamais exposées au frontend
+- Ne jamais afficher/logger une clé API, même en debug
+
+## Où j'en suis / TODO
+- [x] Setup initial backend (NestJS, structure `backend/src/jobs/`, config, lint, tests)
+- [ ] Setup initial frontend
+- [x] Service Adzuna (recherche par mot-clé + localisation) — `backend/src/jobs/adzuna.service.ts`
+- [x] Endpoint GET /jobs/search — reste à renseigner `ADZUNA_APP_ID`/`ADZUNA_APP_KEY` dans `backend/.env` et tester contre l'API réelle
+- [ ] Frontend : formulaire de recherche + affichage liste brute
+- [ ] Service ai-matching (prompt + appel Claude)
+- [ ] Frontend : champ profil + affichage scores/justifications
+- [ ] Cache basique des résultats
+- [ ] Gestion des erreurs / états de chargement UI
