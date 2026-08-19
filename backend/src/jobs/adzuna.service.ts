@@ -45,7 +45,6 @@ export class AdzunaService {
               what,
               where,
               results_per_page: 10,
-              content_type: 'application/json',
             },
           },
         ),
