@@ -43,7 +43,7 @@ export class AiMatchingService {
 
     try {
       const response = await this.client.messages.parse({
-        model: 'claude-opus-5',
+        model: 'claude-haiku-4-5',
         max_tokens: 16000,
         system: this.buildSystemPrompt(),
         messages: [
