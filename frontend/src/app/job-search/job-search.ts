@@ -58,17 +58,20 @@ export class JobSearch {
     this.matchError.set(null);
 
     const { what, where, profile } = this.form.getRawValue();
+    const trimmedProfile = profile.trim();
 
     this.jobsService.search(what, where).subscribe({
       next: (results) => {
-        this.jobs.set(
-          results.map((job) => ({ ...job, score: null, justification: null })),
-        );
         this.searchedOnce.set(true);
         this.loadingSearch.set(false);
 
-        if (profile.trim() && results.length > 0) {
-          this.analyze(profile.trim(), results);
+        const unscored = results.map((job) => ({ ...job, score: null, justification: null }));
+
+        if (trimmedProfile && results.length > 0) {
+          // On n'affiche les offres qu'une fois scorées : pas d'affichage intermédiaire non noté.
+          this.analyze(trimmedProfile, results, unscored);
+        } else {
+          this.jobs.set(unscored);
         }
       },
       error: () => {
@@ -78,7 +81,11 @@ export class JobSearch {
     });
   }
 
-  private analyze(profile: string, jobs: JobOffer[]): void {
+  private analyze(
+    profile: string,
+    jobs: JobOffer[],
+    fallback: MatchedJobOffer[],
+  ): void {
     this.loadingMatch.set(true);
     this.matchError.set(null);
 
@@ -117,6 +124,7 @@ export class JobSearch {
         this.matchError.set(
           "L'analyse IA a échoué. Les offres restent affichées sans score.",
         );
+        this.jobs.set(fallback);
         this.loadingMatch.set(false);
       },
     });

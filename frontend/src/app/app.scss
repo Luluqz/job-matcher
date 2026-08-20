@@ -1,23 +1,41 @@
 .app-header {
   height: auto;
   padding: 0.85rem 1.5rem;
+  justify-content: center;
+  text-align: center;
 
   .header-content {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .title-frame {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+
+    mat-icon {
+      color: #ffe08a;
+    }
   }
 
   h1 {
     margin: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
   }
 
   .tagline {
     margin: 0;
     font-size: 0.85rem;
-    opacity: 0.85;
+    opacity: 0.9;
   }
 }
 

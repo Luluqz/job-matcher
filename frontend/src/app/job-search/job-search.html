@@ -3,23 +3,26 @@
     <div class="fields">
       <mat-form-field appearance="outline" class="field-what">
         <mat-label>Mot-clé</mat-label>
+        <mat-icon matPrefix>work</mat-icon>
         <input id="what" matInput formControlName="what" placeholder="ex: développeur angular" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="field-where">
         <mat-label>Localisation</mat-label>
+        <mat-icon matPrefix>place</mat-icon>
         <input id="where" matInput formControlName="where" placeholder="ex: Paris" />
       </mat-form-field>
     </div>
 
     <mat-form-field appearance="outline" class="field-profile">
       <mat-label>Ton profil (optionnel, pour le scoring IA)</mat-label>
+      <mat-icon matPrefix>psychology</mat-icon>
       <textarea
         id="profile"
         matInput
         formControlName="profile"
         rows="4"
-        placeholder="Décris ton expérience, tes compétences, ce que tu recherches…"
+        placeholder="Ex : Développeur Angular, 5 ans d'expérience, à l'aise en TypeScript/RxJS. Je cherche un poste frontend en télétravail partiel, région Paris, en CDI."
       ></textarea>
     </mat-form-field>
 
@@ -38,10 +41,16 @@
     }
 
     @if (searchError()) {
-      <p class="error">{{ searchError() }}</p>
+      <p class="error">
+        <mat-icon>error_outline</mat-icon>
+        {{ searchError() }}
+      </p>
     }
     @if (matchError()) {
-      <p class="error">{{ matchError() }}</p>
+      <p class="error">
+        <mat-icon>error_outline</mat-icon>
+        {{ matchError() }}
+      </p>
     }
   </form>
 </mat-card>
@@ -54,7 +63,10 @@
           <mat-card-content>
             <div class="job-header">
               <h3>
-                <a [href]="job.url" target="_blank" rel="noopener">{{ job.title }}</a>
+                <a [href]="job.url" target="_blank" rel="noopener">
+                  {{ job.title }}
+                  <mat-icon class="link-icon">open_in_new</mat-icon>
+                </a>
               </h3>
               @if (job.score !== null) {
                 <span
@@ -68,14 +80,17 @@
               }
             </div>
             <p class="meta">
-              {{ job.company ?? 'Entreprise non précisée' }} —
-              {{ job.location ?? 'Lieu non précisé' }}
+              <span><mat-icon>business</mat-icon> {{ job.company ?? 'Entreprise non précisée' }}</span>
+              <span><mat-icon>place</mat-icon> {{ job.location ?? 'Lieu non précisé' }}</span>
             </p>
             @if (job.salaryMin || job.salaryMax) {
-              <p class="salary">{{ job.salaryMin }} – {{ job.salaryMax }} €</p>
+              <p class="salary"><mat-icon>payments</mat-icon> {{ job.salaryMin }} – {{ job.salaryMax }} €</p>
             }
             @if (job.justification) {
-              <p class="justification">{{ job.justification }}</p>
+              <p class="justification">
+                <mat-icon>auto_awesome</mat-icon>
+                <span>{{ job.justification }}</span>
+              </p>
             }
             <p class="description">{{ job.description }}</p>
           </mat-card-content>
@@ -83,6 +98,9 @@
       </li>
     }
   </ul>
-} @else if (searchedOnce() && !loadingSearch()) {
-  <p class="empty">Aucune offre trouvée pour cette recherche.</p>
+} @else if (searchedOnce() && !loadingSearch() && !loadingMatch()) {
+  <p class="empty">
+    <mat-icon>search_off</mat-icon>
+    Aucune offre trouvée pour cette recherche.
+  </p>
 }

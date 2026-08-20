@@ -17,11 +17,12 @@ test.describe('Recherche et matching IA', () => {
     );
     await page.click('button[type="submit"]');
 
-    await expect(page.locator('.job-card').first()).toBeVisible({ timeout: 20_000 });
+    // Le profil est rempli : les offres n'apparaissent qu'une fois scorées par l'IA,
+    // pas d'affichage intermédiaire non noté.
+    await expect(page.locator('.job-card').first()).toBeVisible({ timeout: 30_000 });
     const jobCount = await page.locator('.job-card').count();
     expect(jobCount).toBeGreaterThan(0);
 
-    await expect(page.locator('.score').first()).toBeVisible({ timeout: 30_000 });
     const scoreCount = await page.locator('.score').count();
     expect(scoreCount).toBe(jobCount);
 
