@@ -81,3 +81,8 @@ job-matcher/
 - [x] Cache basique des résultats — `backend/src/jobs/cache.service.ts` (Map en mémoire, TTL 5 min),
   branché dans `AdzunaService.search()` sur la clé (what, where, page)
 - [ ] Gestion des erreurs / états de chargement UI — gestion basique déjà en place (spinners texte + messages d'erreur sur recherche/analyse), à revoir si besoin de plus fin
+- [ ] Accès depuis le téléphone via Tailscale (réseau privé, pas de déploiement public — évite les
+  soucis de conditions d'usage de la clé Adzuna et d'abus des tokens Anthropic) : adapter
+  `API_BASE_URL` (`frontend/src/app/core/config/api.config.ts`, en dur sur `localhost:3000`) et le
+  CORS backend (`backend/src/main.ts`, en dur sur `http://localhost:4200`) pour pointer vers
+  l'adresse Tailscale du PC au lieu de `localhost`
