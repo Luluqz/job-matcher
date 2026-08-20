@@ -11,17 +11,15 @@ test.describe('Recherche et matching IA', () => {
 
     await page.fill('#what', 'développeur angular');
     await page.fill('#where', 'Paris');
+    await page.fill(
+      '#profile',
+      "Développeur Angular avec 5 ans d'expérience, je cherche un poste orienté frontend, idéalement en télétravail.",
+    );
     await page.click('button[type="submit"]');
 
     await expect(page.locator('.job-card').first()).toBeVisible({ timeout: 20_000 });
     const jobCount = await page.locator('.job-card').count();
     expect(jobCount).toBeGreaterThan(0);
-
-    await page.fill(
-      '#profile',
-      "Développeur Angular avec 5 ans d'expérience, je cherche un poste orienté frontend, idéalement en télétravail.",
-    );
-    await page.click('button:has-text("Analyser avec l\'IA")');
 
     await expect(page.locator('.score').first()).toBeVisible({ timeout: 30_000 });
     const scoreCount = await page.locator('.score').count();

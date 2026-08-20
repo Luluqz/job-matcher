@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobsService } from '../core/services/jobs.service';
 import { JobOffer, MatchedJobOffer } from '../core/models/job-offer.model';
@@ -28,6 +28,12 @@ export class JobSearch {
   readonly searchError = signal<string | null>(null);
   readonly matchError = signal<string | null>(null);
 
+  readonly submitLabel = computed(() => {
+    if (this.loadingSearch()) return 'Recherche…';
+    if (this.loadingMatch()) return 'Analyse en cours…';
+    return 'Rechercher';
+  });
+
   search(): void {
     if (this.form.controls.what.invalid) {
       return;
@@ -37,7 +43,7 @@ export class JobSearch {
     this.searchError.set(null);
     this.matchError.set(null);
 
-    const { what, where } = this.form.getRawValue();
+    const { what, where, profile } = this.form.getRawValue();
 
     this.jobsService.search(what, where).subscribe({
       next: (results) => {
@@ -46,6 +52,10 @@ export class JobSearch {
         );
         this.searchedOnce.set(true);
         this.loadingSearch.set(false);
+
+        if (profile.trim() && results.length > 0) {
+          this.analyze(profile.trim(), results);
+        }
       },
       error: () => {
         this.searchError.set('La recherche a échoué. Réessaie dans un instant.');
@@ -54,16 +64,11 @@ export class JobSearch {
     });
   }
 
-  analyze(): void {
-    const profile = this.form.controls.profile.value.trim();
-    if (!profile || this.jobs().length === 0) {
-      return;
-    }
-
+  private analyze(profile: string, jobs: JobOffer[]): void {
     this.loadingMatch.set(true);
     this.matchError.set(null);
 
-    const jobsToScore: JobOffer[] = this.jobs()
+    const jobsToScore: JobOffer[] = jobs
       .slice(0, MAX_JOBS_TO_MATCH)
       .map(
         ({

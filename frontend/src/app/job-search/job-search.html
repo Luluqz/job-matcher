@@ -13,36 +13,27 @@
       <label for="where">Localisation</label>
       <input id="where" type="text" formControlName="where" placeholder="ex: Paris" />
     </div>
-    <button type="submit" [disabled]="form.controls.what.invalid || loadingSearch()">
-      {{ loadingSearch() ? 'Recherche…' : 'Rechercher' }}
-    </button>
   </div>
+
+  <div class="field profile-field">
+    <label for="profile">Ton profil (optionnel, pour le scoring IA)</label>
+    <textarea
+      id="profile"
+      formControlName="profile"
+      rows="4"
+      placeholder="Décris ton expérience, tes compétences, ce que tu recherches…"
+    ></textarea>
+  </div>
+
+  <button type="submit" [disabled]="form.controls.what.invalid || loadingSearch() || loadingMatch()">
+    {{ submitLabel() }}
+  </button>
 
   @if (searchError()) {
     <p class="error">{{ searchError() }}</p>
   }
-
-  @if (jobs().length > 0) {
-    <div class="field profile-field">
-      <label for="profile">Ton profil (pour le scoring IA)</label>
-      <textarea
-        id="profile"
-        formControlName="profile"
-        rows="4"
-        placeholder="Décris ton expérience, tes compétences, ce que tu recherches…"
-      ></textarea>
-      <button
-        type="button"
-        (click)="analyze()"
-        [disabled]="!form.controls.profile.value.trim() || loadingMatch()"
-      >
-        {{ loadingMatch() ? 'Analyse en cours…' : "Analyser avec l'IA" }}
-      </button>
-    </div>
-
-    @if (matchError()) {
-      <p class="error">{{ matchError() }}</p>
-    }
+  @if (matchError()) {
+    <p class="error">{{ matchError() }}</p>
   }
 </form>
 
