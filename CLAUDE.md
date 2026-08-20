@@ -61,9 +61,9 @@ job-matcher/
 - [x] Setup initial backend (NestJS, structure `backend/src/jobs/`, config, lint, tests)
 - [ ] Setup initial frontend
 - [x] Service Adzuna (recherche par mot-clé + localisation) — `backend/src/jobs/adzuna.service.ts`
-- [x] Endpoint GET /jobs/search — reste à renseigner `ADZUNA_APP_ID`/`ADZUNA_APP_KEY` dans `backend/.env` et tester contre l'API réelle
+- [x] Endpoint GET /jobs/search — testé contre l'API Adzuna réelle (params `what`/`where`), OK
 - [ ] Frontend : formulaire de recherche + affichage liste brute
-- [ ] Service ai-matching (prompt + appel Claude)
+- [x] Service ai-matching (prompt + appel Claude) — `backend/src/jobs/ai-matching.service.ts`, endpoint `POST /jobs/match`, testé de bout en bout (recherche Adzuna réelle → scoring Claude réel, scores cohérents)
 - [ ] Frontend : champ profil + affichage scores/justifications
 - [ ] Cache basique des résultats
 - [ ] Gestion des erreurs / états de chargement UI
