@@ -27,6 +27,10 @@ job-matcher/
 - Backend dev : `cd backend && npm run start:dev` (port 3000)
 - Frontend dev : `cd frontend && ng serve` (port 4200)
 - Tests backend : `cd backend && npm run test`
+- Tests e2e (Playwright) : `cd e2e && npm install && npx playwright install chromium` (une fois), puis
+  `npx playwright test` — démarre automatiquement backend + frontend (voir `webServer` dans
+  `e2e/playwright.config.ts`), teste le parcours recherche → scoring IA contre les vraies API
+  Adzuna/Claude configurées dans `backend/.env`
 - Lint : `npm run lint` (à lancer après chaque modif de code backend)
 
 ## Conventions de code
@@ -65,5 +69,7 @@ job-matcher/
 - [x] Frontend : formulaire de recherche + affichage liste brute — `frontend/src/app/job-search/`, service `frontend/src/app/core/services/jobs.service.ts`
 - [x] Service ai-matching (prompt + appel Claude) — `backend/src/jobs/ai-matching.service.ts`, endpoint `POST /jobs/match`, testé de bout en bout (recherche Adzuna réelle → scoring Claude réel, scores cohérents)
 - [x] Frontend : champ profil + affichage scores/justifications — inclus dans `job-search` (bouton "Analyser avec l'IA"), testé de bout en bout dans le navigateur
+- [x] Tests e2e Playwright (`e2e/`) — parcours recherche + scoring IA, cas "aucune offre", bouton
+  désactivé sans mot-clé ; tourne contre les vraies API (pas de mocks)
 - [ ] Cache basique des résultats
 - [ ] Gestion des erreurs / états de chargement UI — gestion basique déjà en place (spinners texte + messages d'erreur sur recherche/analyse), à revoir si besoin de plus fin
