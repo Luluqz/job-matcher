@@ -1,5 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { JobsService } from '../core/services/jobs.service';
 import { JobOffer, MatchedJobOffer } from '../core/models/job-offer.model';
 
@@ -7,7 +13,15 @@ const MAX_JOBS_TO_MATCH = 10;
 
 @Component({
   selector: 'app-job-search',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressBarModule,
+  ],
   templateUrl: './job-search.html',
   styleUrl: './job-search.scss',
 })
