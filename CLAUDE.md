@@ -33,6 +33,12 @@ job-matcher/
   Adzuna/Claude configurées dans `backend/.env`
 - Lint : `npm run lint` (à lancer après chaque modif de code backend)
 
+## CI
+- `.github/workflows/e2e.yml` : lance la suite e2e Playwright sur chaque push/PR vers `master`
+  (runner Ubuntu, contre les vraies API). Nécessite les secrets repo GitHub `ADZUNA_APP_ID`,
+  `ADZUNA_APP_KEY`, `ADZUNA_COUNTRY`, `ANTHROPIC_API_KEY` (Settings → Secrets and variables →
+  Actions) — sans eux le job échoue sur les appels API
+
 ## Conventions de code
 - TypeScript strict partout
 - Services NestJS injectables avec interfaces typées pour les réponses Adzuna/Claude
