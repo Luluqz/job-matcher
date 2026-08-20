@@ -59,11 +59,11 @@ job-matcher/
 
 ## Où j'en suis / TODO
 - [x] Setup initial backend (NestJS, structure `backend/src/jobs/`, config, lint, tests)
-- [ ] Setup initial frontend
+- [x] Setup initial frontend (Angular 22 standalone, SCSS, `frontend/src/app/`)
 - [x] Service Adzuna (recherche par mot-clé + localisation) — `backend/src/jobs/adzuna.service.ts`
 - [x] Endpoint GET /jobs/search — testé contre l'API Adzuna réelle (params `what`/`where`), OK
-- [ ] Frontend : formulaire de recherche + affichage liste brute
+- [x] Frontend : formulaire de recherche + affichage liste brute — `frontend/src/app/job-search/`, service `frontend/src/app/core/services/jobs.service.ts`
 - [x] Service ai-matching (prompt + appel Claude) — `backend/src/jobs/ai-matching.service.ts`, endpoint `POST /jobs/match`, testé de bout en bout (recherche Adzuna réelle → scoring Claude réel, scores cohérents)
-- [ ] Frontend : champ profil + affichage scores/justifications
+- [x] Frontend : champ profil + affichage scores/justifications — inclus dans `job-search` (bouton "Analyser avec l'IA"), testé de bout en bout dans le navigateur
 - [ ] Cache basique des résultats
-- [ ] Gestion des erreurs / états de chargement UI
+- [ ] Gestion des erreurs / états de chargement UI — gestion basique déjà en place (spinners texte + messages d'erreur sur recherche/analyse), à revoir si besoin de plus fin

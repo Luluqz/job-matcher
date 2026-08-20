@@ -1,0 +1,160 @@
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 200px;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+  }
+
+  input,
+  textarea {
+    padding: 0.5rem 0.65rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font: inherit;
+  }
+}
+
+.profile-field {
+  flex-basis: 100%;
+
+  button {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+}
+
+button {
+  padding: 0.55rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  background: #6d28d9;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    background: #c4b5fd;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background: #5b21b6;
+  }
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.empty {
+  color: #666;
+}
+
+.job-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.job-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.05rem;
+
+      a {
+        color: #1f2937;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .score {
+    flex-shrink: 0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: #e5e7eb;
+    color: #374151;
+
+    &.score-high {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    &.score-mid {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    &.score-low {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+  }
+
+  .meta {
+    margin: 0.4rem 0 0;
+    color: #555;
+    font-size: 0.9rem;
+  }
+
+  .salary {
+    margin: 0.2rem 0 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .justification {
+    margin: 0.6rem 0 0;
+    padding: 0.5rem 0.75rem;
+    background: #f5f3ff;
+    border-left: 3px solid #6d28d9;
+    font-size: 0.9rem;
+    color: #4c1d95;
+  }
+
+  .description {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
+  }
+}
