@@ -74,8 +74,10 @@ job-matcher/
 - [x] Endpoint GET /jobs/search — testé contre l'API Adzuna réelle (params `what`/`where`), OK
 - [x] Frontend : formulaire de recherche + affichage liste brute — `frontend/src/app/job-search/`, service `frontend/src/app/core/services/jobs.service.ts`
 - [x] Service ai-matching (prompt + appel Claude) — `backend/src/jobs/ai-matching.service.ts`, endpoint `POST /jobs/match`, testé de bout en bout (recherche Adzuna réelle → scoring Claude réel, scores cohérents)
-- [x] Frontend : champ profil + affichage scores/justifications — inclus dans `job-search` (bouton "Analyser avec l'IA"), testé de bout en bout dans le navigateur
+- [x] Frontend : champ profil + affichage scores/justifications — inclus dans `job-search`, testé de bout en bout dans le navigateur
+- [x] Recherche + scoring IA fusionnés en une seule action utilisateur (un seul bouton "Rechercher")
 - [x] Tests e2e Playwright (`e2e/`) — parcours recherche + scoring IA, cas "aucune offre", bouton
   désactivé sans mot-clé ; tourne contre les vraies API (pas de mocks)
-- [ ] Cache basique des résultats
+- [x] Cache basique des résultats — `backend/src/jobs/cache.service.ts` (Map en mémoire, TTL 5 min),
+  branché dans `AdzunaService.search()` sur la clé (what, where, page)
 - [ ] Gestion des erreurs / états de chargement UI — gestion basique déjà en place (spinners texte + messages d'erreur sur recherche/analyse), à revoir si besoin de plus fin

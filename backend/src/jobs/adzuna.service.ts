@@ -6,8 +6,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
+import { CacheService } from './cache.service';
 import { AdzunaSearchResponse } from './interfaces/adzuna-job.interface';
 import { JobOffer } from './interfaces/job-offer.interface';
+
+const CACHE_TTL_MS = 5 * 60 * 1000;
 
 @Injectable()
 export class AdzunaService {
@@ -17,6 +20,7 @@ export class AdzunaService {
   constructor(
     private readonly http: HttpService,
     private readonly config: ConfigService,
+    private readonly cache: CacheService,
   ) {}
 
   async search(
@@ -24,6 +28,12 @@ export class AdzunaService {
     where: string | undefined,
     page: number,
   ): Promise<JobOffer[]> {
+    const cacheKey = this.buildCacheKey(what, where, page);
+    const cached = this.cache.get<JobOffer[]>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const appId = this.config.get<string>('ADZUNA_APP_ID');
     const appKey = this.config.get<string>('ADZUNA_APP_KEY');
     const country = this.config.get<string>('ADZUNA_COUNTRY') ?? 'fr';
@@ -50,7 +60,9 @@ export class AdzunaService {
         ),
       );
 
-      return data.results.map((job) => this.toJobOffer(job));
+      const jobs = data.results.map((job) => this.toJobOffer(job));
+      this.cache.set(cacheKey, jobs, CACHE_TTL_MS);
+      return jobs;
     } catch (error) {
       this.logger.error(
         'Adzuna search failed',
@@ -60,6 +72,14 @@ export class AdzunaService {
         'Unable to fetch job offers from Adzuna',
       );
     }
+  }
+
+  private buildCacheKey(
+    what: string,
+    where: string | undefined,
+    page: number,
+  ): string {
+    return `${what.trim().toLowerCase()}|${(where ?? '').trim().toLowerCase()}|${page}`;
   }
 
   private toJobOffer(job: AdzunaSearchResponse['results'][number]): JobOffer {
